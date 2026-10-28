@@ -154,9 +154,27 @@
   .products { background: var(--kraft); color: var(--ink); }
   .products .lede { color: var(--ink-muted); }
   .group + .group { margin-top: 56px; }
-  .group-head { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 4px 16px; margin: 48px 0 20px; padding-bottom: 12px; border-bottom: 2px solid var(--ink); }
+  .group-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; margin: 48px 0 20px; padding-bottom: 12px; border-bottom: 2px solid var(--ink); }
   .group-head h3 { font-size: 1.875rem; }
-  .group-head p { margin: 0; color: var(--ink-muted); font-style: italic; }
+  .group-head p { margin: 4px 0 0; color: var(--ink-muted); font-style: italic; }
+
+  /* Phin dripping into a glass, sitting on the group's rule like on a table */
+  .phin { flex: none; width: clamp(76px, 12vw, 104px); height: auto; margin: -40px 8px -14px 0; }
+  .drop, .ripple { opacity: 0; transform-box: fill-box; }
+  .drop { animation: drip 2.6s cubic-bezier(.55,0,.9,.5) infinite; }
+  .ripple { transform-origin: center; animation: ripple 2.6s ease-out infinite; }
+  .drop.d2, .ripple.d2 { animation-delay: 1.3s; }
+  @keyframes drip {
+    0% { opacity: 0; transform: translateY(0) scaleY(.6); }
+    12% { opacity: 1; transform: translateY(0) scaleY(1); }
+    68% { opacity: 1; transform: translateY(54px) scaleY(1.3); }
+    70%, 100% { opacity: 0; transform: translateY(54px); }
+  }
+  @keyframes ripple {
+    0%, 68% { opacity: 0; transform: scale(1); }
+    70% { opacity: .9; transform: scale(1); }
+    100% { opacity: 0; transform: scale(7, 4); }
+  }
   .cards { display: grid; gap: 20px; grid-template-columns: 1fr; }
   @media (min-width: 640px) { .cards { grid-template-columns: repeat(2, 1fr); } }
   @media (min-width: 960px) { .cards { grid-template-columns: repeat(3, 1fr); } }
@@ -232,6 +250,7 @@
     .froth { opacity: 1; }
     .whisked .whisk, .whisked .froth { animation: none; }
     .steam path { animation: none; opacity: .35; }
+    .drop, .ripple { animation: none; }
   }
 </style>
 </head>
@@ -343,7 +362,7 @@
       <p class="lede">Giá theo ly cỡ vừa. Món nào cũng có bản nóng, và mọi đồ uống matcha có thể đổi sang sữa yến mạch, không tính thêm tiền.</p>
 
       <div class="group">
-        <div class="group-head"><h3>Matcha</h3><p>Matcha Uji, đánh tay theo từng ly</p></div>
+        <div class="group-head"><div><h3>Matcha</h3><p>Matcha Uji, đánh tay theo từng ly</p></div></div>
         <div class="cards">
           <article class="card">
             <span class="cup" style="--drink: #7F9238; --rim: #A9B85E" aria-hidden="true"></span>
@@ -368,7 +387,37 @@
       </div>
 
       <div class="group">
-        <div class="group-head"><h3>Cà phê</h3><p>Arabica Cầu Đất, rang mỗi thứ Hai</p></div>
+        <div class="group-head">
+          <div><h3>Cà phê</h3><p>Arabica Cầu Đất, rang mỗi thứ Hai</p></div>
+          <svg class="phin" viewBox="0 0 160 236" role="img" aria-label="Phin cà phê đang nhỏ giọt vào ly có sẵn sữa đặc">
+            <defs>
+              <linearGradient id="alu" x1="0" x2="1">
+                <stop offset="0" stop-color="#8F8577"/><stop offset=".35" stop-color="#DDD4C6"/><stop offset=".6" stop-color="#B9AF9F"/><stop offset="1" stop-color="#7E7467"/>
+              </linearGradient>
+              <clipPath id="glass-clip"><path d="M43 98 L117 98 L110 224 Q109 229 104 229 L56 229 Q51 229 50 224 Z"/></clipPath>
+            </defs>
+            <!-- phin: lid, chamber, base plate -->
+            <rect x="74" y="2" width="12" height="10" rx="3" fill="url(#alu)"/>
+            <rect x="50" y="10" width="60" height="9" rx="3" fill="url(#alu)"/>
+            <path d="M52 19 L108 19 L103 82 L57 82 Z" fill="url(#alu)"/>
+            <rect x="28" y="82" width="104" height="7" rx="3.5" fill="url(#alu)"/>
+            <rect x="72" y="89" width="16" height="5" rx="1.5" fill="#8F8577"/>
+            <!-- glass with condensed milk and coffee -->
+            <g clip-path="url(#glass-clip)">
+              <rect x="40" y="96" width="80" height="140" fill="#FBF6EE" opacity=".45"/>
+              <rect x="40" y="150" width="80" height="56" fill="#4A2A17"/>
+              <rect x="40" y="150" width="80" height="3" fill="#8A5A34"/>
+              <rect x="40" y="204" width="80" height="30" fill="#EAD7AE"/>
+            </g>
+            <path d="M40 96 L120 96 L112 226 Q111 232 105 232 L55 232 Q49 232 48 226 Z" fill="none" stroke="#A88E6A" stroke-width="2.5"/>
+            <path d="M50 104 L45 210" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".5"/>
+            <!-- drips -->
+            <ellipse class="drop" cx="80" cy="97" rx="2.6" ry="3.6" fill="#3D2214"/>
+            <ellipse class="drop d2" cx="80" cy="97" rx="2.6" ry="3.6" fill="#3D2214"/>
+            <ellipse class="ripple" cx="80" cy="151" rx="2" ry="1" fill="none" stroke="#C4925E" stroke-width="1" vector-effect="non-scaling-stroke"/>
+            <ellipse class="ripple d2" cx="80" cy="151" rx="2" ry="1" fill="none" stroke="#C4925E" stroke-width="1" vector-effect="non-scaling-stroke"/>
+          </svg>
+        </div>
         <div class="cards">
           <article class="card">
             <span class="cup" style="--drink: #D7AE62; --rim: #F0DCA6" aria-hidden="true"></span>
