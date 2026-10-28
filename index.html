@@ -159,7 +159,41 @@
   .group-head p { margin: 4px 0 0; color: var(--ink-muted); font-style: italic; }
 
   /* Phin dripping into a glass, sitting on the group's rule like on a table */
-  .phin { flex: none; width: clamp(76px, 12vw, 104px); height: auto; margin: -40px 8px -14px 0; }
+  .phin, .chawan { flex: none; width: clamp(76px, 12vw, 104px); height: auto; margin: -40px 8px -14px 0; }
+  .chawan { overflow: visible; }
+
+  /* Chawan: bamboo whisk stirring, aroma and tea leaves drifting up */
+  .chasen { transform-box: fill-box; transform-origin: 50% 0; animation: stir .42s ease-in-out infinite alternate; }
+  @keyframes stir {
+    from { transform: translateX(-14px) rotate(7deg); }
+    to { transform: translateX(14px) rotate(-7deg); }
+  }
+  .foam circle { transform-box: fill-box; transform-origin: center; animation: foam 1.6s ease-in-out infinite; }
+  .foam circle:nth-child(2) { animation-delay: .4s; }
+  .foam circle:nth-child(3) { animation-delay: .8s; }
+  .foam circle:nth-child(4) { animation-delay: 1.2s; }
+  @keyframes foam { 0%, 100% { opacity: .35; transform: scale(.6); } 50% { opacity: 1; transform: scale(1.1); } }
+  .aroma path { opacity: 0; animation: aroma 5s ease-in-out infinite; }
+  .aroma path:nth-child(2) { animation-delay: 1.7s; }
+  .aroma path:nth-child(3) { animation-delay: 3.4s; }
+  @keyframes aroma {
+    0% { opacity: 0; transform: translateY(14px); }
+    35% { opacity: .7; }
+    100% { opacity: 0; transform: translateY(-30px); }
+  }
+  .leaf { opacity: 0; transform-box: fill-box; transform-origin: center; animation: leaf 6s ease-out infinite; }
+  .leaf.l2 { animation-delay: 3s; }
+  @keyframes leaf {
+    0% { opacity: 0; transform: translate(0, 0) rotate(0); }
+    20% { opacity: .9; }
+    100% { opacity: 0; transform: translate(-14px, -90px) rotate(160deg); }
+  }
+  .leaf.l2 { animation-name: leaf2; }
+  @keyframes leaf2 {
+    0% { opacity: 0; transform: translate(0, 0) rotate(0); }
+    20% { opacity: .9; }
+    100% { opacity: 0; transform: translate(16px, -84px) rotate(-150deg); }
+  }
   .drop, .ripple { opacity: 0; transform-box: fill-box; }
   .drop { animation: drip 2.6s cubic-bezier(.55,0,.9,.5) infinite; }
   .ripple { transform-origin: center; animation: ripple 2.6s ease-out infinite; }
@@ -251,6 +285,8 @@
     .whisked .whisk, .whisked .froth { animation: none; }
     .steam path { animation: none; opacity: .35; }
     .drop, .ripple { animation: none; }
+    .chasen, .foam circle, .leaf, .leaf.l2 { animation: none; }
+    .aroma path { animation: none; opacity: .4; }
   }
 </style>
 </head>
@@ -362,7 +398,47 @@
       <p class="lede">Giá theo ly cỡ vừa. Món nào cũng có bản nóng, và mọi đồ uống matcha có thể đổi sang sữa yến mạch, không tính thêm tiền.</p>
 
       <div class="group">
-        <div class="group-head"><div><h3>Matcha</h3><p>Matcha Uji, đánh tay theo từng ly</p></div></div>
+        <div class="group-head">
+          <div><h3>Matcha</h3><p>Matcha Uji, đánh tay theo từng ly</p></div>
+          <svg class="chawan" viewBox="0 0 160 204" role="img" aria-label="Chổi tre đang đánh matcha trong bát gốm, hương trà bốc lên">
+            <defs>
+              <linearGradient id="clay" x1="0" x2="1">
+                <stop offset="0" stop-color="#8E5F43"/><stop offset=".4" stop-color="#C99A74"/><stop offset="1" stop-color="#7A4F37"/>
+              </linearGradient>
+              <clipPath id="above-tea"><rect x="0" y="0" width="160" height="137"/></clipPath>
+            </defs>
+            <!-- aroma -->
+            <g class="aroma" fill="none" stroke="#8C9A48" stroke-width="3.5" stroke-linecap="round">
+              <path d="M52 112 C42 96 62 86 52 68 S58 42 50 28"/>
+              <path d="M108 110 C118 94 98 84 110 66 S102 40 112 26"/>
+              <path d="M80 104 C72 90 90 80 82 62 S88 40 80 22"/>
+            </g>
+            <path class="leaf" d="M60 118 Q66 108 74 112 Q68 122 60 118 Z" fill="#7F9238"/>
+            <path class="leaf l2" d="M96 120 Q102 110 110 114 Q104 124 96 120 Z" fill="#94A64A"/>
+            <!-- bowl back rim and tea surface -->
+            <ellipse cx="80" cy="130" rx="58" ry="11" fill="#6A4632"/>
+            <ellipse cx="80" cy="132" rx="52" ry="8" fill="#86973C"/>
+            <g class="foam" fill="#E4E8B8">
+              <circle cx="58" cy="132" r="2"/><circle cx="96" cy="130" r="1.6"/>
+              <circle cx="74" cy="135" r="1.4"/><circle cx="108" cy="134" r="1.8"/>
+            </g>
+            <!-- chasen -->
+            <g class="chasen" clip-path="url(#above-tea)">
+              <rect x="76" y="40" width="8" height="52" rx="3" fill="#D9C08A"/>
+              <rect x="76" y="56" width="8" height="2" fill="#B89A62"/>
+              <g stroke="#E8D7A8" stroke-width="1.6" stroke-linecap="round" fill="none">
+                <path d="M80 90 Q66 112 68 140"/><path d="M80 90 Q72 114 74 140"/>
+                <path d="M80 90 L80 140"/><path d="M80 90 Q88 114 86 140"/>
+                <path d="M80 90 Q94 112 92 140"/>
+              </g>
+              <ellipse cx="80" cy="118" rx="9" ry="2" fill="none" stroke="#C9AE76" stroke-width="1.4"/>
+            </g>
+            <!-- bowl front -->
+            <path d="M22 130 A58 11 0 0 0 138 130 Q136 186 80 190 Q24 186 22 130 Z" fill="url(#clay)"/>
+            <path d="M30 140 Q34 170 54 180" stroke="#E6C3A0" stroke-width="3" stroke-linecap="round" fill="none" opacity=".45"/>
+            <rect x="60" y="188" width="40" height="10" rx="3" fill="#7A4F37"/>
+          </svg>
+        </div>
         <div class="cards">
           <article class="card">
             <span class="cup" style="--drink: #7F9238; --rim: #A9B85E" aria-hidden="true"></span>
@@ -382,6 +458,25 @@
             <h4>Matcha sữa gừng</h4>
             <p class="desc">Matcha, sữa nóng và gừng tươi giã, thêm chút mật ong rừng.</p>
             <p class="price">59.000đ</p>
+          </article>
+          <article class="card">
+            <span class="cup" style="--drink: #4F6122; --rim: #7F9238" aria-hidden="true"></span>
+            <h4>Koicha đặc</h4>
+            <p class="desc">Gấp đôi lượng bột, nhào chậm thành lớp trà sánh mịn, vị umami đậm.</p>
+            <p class="price">79.000đ</p>
+          </article>
+          <article class="card">
+            <span class="badge">Món mới</span>
+            <span class="cup" style="--drink: #A3B46A; --rim: #B9746A" aria-hidden="true"></span>
+            <h4>Matcha đậu đỏ</h4>
+            <p class="desc">Đậu đỏ Hokkaido ninh mềm dưới đáy ly, matcha latte nóng rót lên trên.</p>
+            <p class="price">62.000đ</p>
+          </article>
+          <article class="card">
+            <span class="cup" style="--drink: #9A6A45; --rim: #D2B08A" aria-hidden="true"></span>
+            <h4>Hojicha latte</h4>
+            <p class="desc">Trà xanh Uji rang lửa, thơm mùi khói nhẹ, ít caffeine cho buổi tối.</p>
+            <p class="price">55.000đ</p>
           </article>
         </div>
       </div>
@@ -436,6 +531,25 @@
             <h4>Bạc xỉu</h4>
             <p class="desc">Nhiều sữa, ít cà phê, nóng hoặc đá, hợp với người mới uống.</p>
             <p class="price">39.000đ</p>
+          </article>
+          <article class="card">
+            <span class="badge">Món mới</span>
+            <span class="cup" style="--drink: #B98A5E; --rim: #EFE6D4" aria-hidden="true"></span>
+            <h4>Cà phê muối</h4>
+            <p class="desc">Phin đậm phủ lớp kem sữa mặn béo, khuấy đều để vị ngọt bùi hơn.</p>
+            <p class="price">42.000đ</p>
+          </article>
+          <article class="card">
+            <span class="cup" style="--drink: #E8DCC4; --rim: #8A5A34" aria-hidden="true"></span>
+            <h4>Cà phê cốt dừa nóng</h4>
+            <p class="desc">Cốt dừa béo đánh nóng cùng sữa đặc, rưới một shot phin Cầu Đất.</p>
+            <p class="price">49.000đ</p>
+          </article>
+          <article class="card">
+            <span class="cup" style="--drink: #2E180C; --rim: #A0683C" aria-hidden="true"></span>
+            <h4>Pour-over Cầu Đất</h4>
+            <p class="desc">Pha tay qua phễu giấy, hậu vị chocolate và cam chín. Hỏi barista mẻ tuần này.</p>
+            <p class="price">55.000đ</p>
           </article>
         </div>
       </div>
